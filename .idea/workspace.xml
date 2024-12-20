@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1db3e0a-e4bb-43ff-8d98-08252db0497e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/temporalize.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/temporalize.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +55,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734710263052</updated>
-      <workItem from="1734710264681" duration="4585000" />
+      <workItem from="1734710264681" duration="4919000" />
     </task>
     <servers />
   </component>

@@ -1,8 +1,27 @@
 # Temporalize
 
-TODO: Delete this and the text below, and describe your gem
+Temporalize provides a simple way to handle time durations in your Ruby applications. Whether you're dealing with video lengths, gameplay times, or any other duration data, Temporalize makes it easy to store, format, and display durations without the headache.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/temporalize`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Why Temporalize?
+
+I created Temporalize while working on games.directory where we deal with tons of data from different game APIs. We kept running into the same problem - handling duration strings like "PT3H10M10S" from APIs, storing them efficiently in the database, and then formatting them nicely for display.
+Converting these strings, storing them as integers, and formatting them back was becoming a tedious copy-paste job across our models. Inspired by how money-rails elegantly handles currency with monetize :price, I wanted something similarly clean for durations - just temporalize :duration_played and you're done.
+
+# Features
+
+- Dead simple API - just one line to handle a duration attribute
+- Stores durations efficiently as integers (seconds or milliseconds)
+- Automatically handles conversion between different formats
+
+- Multiple output formats:
+
+  - Default timestamp ("01:30:45")
+  - Natural language ("1 hour 30 minutes 45 seconds")
+  - Custom formats
+
+- Plays nice with ActiveRecord
+- Handles both seconds and milliseconds
+- Zero dependencies (other than ActiveRecord)
 
 ## Installation
 
@@ -22,7 +41,63 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 
 ## Usage
 
-TODO: Write usage instructions here
+``` ruby
+class Game < ApplicationRecord
+  # Basic usage - assumes column name is duration_played_in_seconds
+  temporalize :duration_played
+
+  # Custom column name
+  temporalize :total_time, column: :play_time_seconds
+
+  # Handle millisecond precision
+  temporalize :watch_time, column: :watch_time_in_ms
+
+  # Custom format
+  temporalize :completion_time, format: :natural  # "2 hours 30 minutes"
+end
+
+game = Game.new(duration_played: 3665)  # or "PT1H1M5S" from an API
+game.duration_played.to_s  # => "01:01:05"
+```
+```ruby
+class Game < ApplicationRecord
+  temporalize :duration_played
+  temporalize :total_time, column: :play_time_seconds
+  temporalize :watch_time, column: :watch_time_in_ms, format: :natural
+end
+
+game = Game.new(duration_played: 3665)  # or "PT1H1M5S" from an API
+
+# Returns a Temporalize::Seconds object
+game.duration_played       # => #<Temporalize::Seconds:0x00007f9b8a8b0>
+
+# Get formatted strings
+game.duration_played.to_s  # => "01:01:05"
+
+# Different format options
+temporalize :duration_played, format: :natural
+game.duration_played.to_s  # => "1 hour 1 minute 5 seconds"
+
+temporalize :duration_played, format: :hh_mm_ss
+game.duration_played.to_s  # => "01:01:05"
+
+temporalize :duration_played, format: :compact
+game.duration_played.to_s  # => "1h 1m 5s"
+
+# Store in milliseconds
+temporalize :watch_time, column: :watch_time_in_ms
+game.watch_time = 1500              # 1.5 seconds
+game.watch_time.to_s                # => "00:00:01"
+game.watch_time_in_ms               # => 1500
+```
+The value is stored as an integer in your database but accessed through a Temporalize::Seconds object. This gives you the flexibility to:
+
+Store the raw value efficiently in your database
+Format it however you need in your views
+Do calculations with the raw seconds when needed
+Handle both second and millisecond precision
+
+This is especially useful when dealing with APIs that send duration data in various formats - you can normalize everything to integers in the database while maintaining a clean interface for displaying values to users.
 
 ## Development
 
