@@ -148,6 +148,25 @@ class DurationTest < Minitest::Test
     end
   end
 
+  def test_zero_duration
+    @model.class.temporalize :duration, format: :natural
+    @model.duration = 0
+    assert_equal "0 seconds", @model.duration.to_s
+  end
+
+  def test_single_units
+    @model.class.temporalize :duration, format: :natural
+
+    @model.duration = 1
+    assert_equal "1 second", @model.duration.to_s
+
+    @model.duration = 60
+    assert_equal "1 minute", @model.duration.to_s
+
+    @model.duration = 3600
+    assert_equal "1 hour", @model.duration.to_s
+  end
+
   def test_edge_cases
     @model.class.temporalize :duration_played, format: :natural
 

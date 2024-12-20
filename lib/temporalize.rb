@@ -17,7 +17,8 @@ module Temporalize
         seconds = public_send(column)
         return nil if seconds.nil?
 
-        seconds = seconds / 1000 if column.to_s.end_with?("_in_ms")
+        # Only convert from milliseconds if the column name suggests it contains milliseconds
+        seconds = seconds / 1000 if column.to_s.include?("_in_ms") || column.to_s.include?("_milliseconds")
         Temporalize::Seconds.new(seconds, format_string)
       end
 
@@ -30,7 +31,8 @@ module Temporalize
                     raise ArgumentError, "Invalid duration value: #{value.inspect}"
                   end
 
-        seconds = seconds * 1000 if column.to_s.end_with?("_in_ms") && !seconds.nil?
+        # Only convert to milliseconds if the column name suggests it should store milliseconds
+        seconds = seconds * 1000 if (column.to_s.include?("_in_ms") || column.to_s.include?("_milliseconds")) && !seconds.nil?
         public_send("#{column}=", seconds)
       end
     end
