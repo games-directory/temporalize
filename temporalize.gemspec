@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors = ["pacMakaveli"]
   spec.email = ["pacMakaveli90@gmail.com"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
-  spec.license = "MIT"
+  spec.summary       = "Handles attributes representing durations in seconds."
+  spec.description   = "Provides a convenient way to work with attributes that store durations in seconds, allowing for custom formatting and column names."
+  spec.homepage      = "https://github.com/yourusername/temporalize" # Replace with your repo
+  spec.license       = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
@@ -38,4 +38,19 @@ Gem::Specification.new do |spec|
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
+
+  spec.add_dependency "base64"
+  spec.add_dependency "bigdecimal"
+  spec.add_dependency "logger"
+  spec.add_dependency "mutex_m"
+
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "minitest", "~> 5.16"
+  spec.add_development_dependency "rubocop", "~> 1.21"
+  spec.add_development_dependency "activerecord", "~> 6.0"
+  spec.add_development_dependency "activesupport", "~> 6.0"
+  spec.add_development_dependency "sqlite3", "~> 1.4"
+
+
 end
