@@ -3,7 +3,11 @@
 require "active_support/concern"
 
 module Temporalize
-  module Configuration
-    mattr_accessor :default_format, default: Formats::DEFAULT
+  class Configuration
+    attr_accessor :default_format
+
+    def initialize
+      @default_format = Formats::DEFAULT
+    end
   end
 end

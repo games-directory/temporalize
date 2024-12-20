@@ -1,44 +1,54 @@
-# lib/temporalize/seconds.rb (updated format_as_hh_mm_ss)
 # frozen_string_literal: true
 
 module Temporalize
-  module Formats
-    DEFAULT = "%H:%M:%S".freeze
-    HH_MM_SS = "%H:%M:%S".freeze
-  end
-
   class Seconds
-    include Formats
-
     attr_reader :seconds, :format_string
 
-    def initialize(seconds, format_string)
-      @seconds = seconds
-      @format_string = format_string
+    def initialize(seconds, format_string = Formats::DEFAULT)
+      @seconds = seconds.to_i
+      @format_string = resolve_format(format_string)
     end
 
     def to_s
-      format_duration
-    end
-
-    def format_duration
-      case @format_string
-      when :hh_mm_ss, HH_MM_SS
-        format_as_hh_mm_ss
+      if @format_string == :natural
+        to_natural
       else
-        format_with_custom_format
+        format_duration
       end
     end
 
-    def format_as_hh_mm_ss
-      format(HH_MM_SS, hours: hours, minutes: minutes, seconds: seconds_remainder) # Use keyword arguments
-    end
-
-    def format_with_custom_format
-      format(@format_string, hours: hours, minutes: minutes, seconds: seconds_remainder)
-    end
-
     private
+
+    def format_duration
+      time = Time.at(@seconds).utc
+      time.strftime(@format_string)
+    end
+
+    def to_natural
+      hours_val = hours
+      minutes_val = minutes
+      seconds_val = seconds_remainder
+
+      parts = []
+      parts << "#{hours_val} #{hours_val == 1 ? 'hour' : 'hours'}" if hours_val > 0
+      parts << "#{minutes_val} #{minutes_val == 1 ? 'minute' : 'minutes'}" if minutes_val > 0
+      parts << "#{seconds_val} #{seconds_val == 1 ? 'second' : 'seconds'}" if seconds_val > 0 || parts.empty?
+
+      parts.join(' ')
+    end
+
+    def resolve_format(format)
+      case format
+      when Symbol
+        if format == :natural
+          :natural
+        else
+          Formats.const_get(format.to_s.upcase)
+        end
+      else
+        format
+      end
+    end
 
     def hours
       @seconds / 3600

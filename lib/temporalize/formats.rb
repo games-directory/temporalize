@@ -2,7 +2,14 @@
 
 module Temporalize
   module Formats
-    DEFAULT = "HH:MM:SS".freeze
-    HH_MM_SS = :hh_mm_ss # This is just a suggestion, and you can remove it if you don't want to use it.
+    NATURAL = :natural  # Special format for human-readable output
+
+    DEFAULT = "%H:%M:%S".freeze
+    HH_MM_SS = "%H:%M:%S".freeze
+    HOURS_MINUTES = "%H:%M".freeze
+    MINUTES_SECONDS = "%M:%S".freeze
+    VERBOSE = "%H hours %M minutes %S seconds".freeze
+    COMPACT = "%Hh %Mm %Ss".freeze
+
   end
 end

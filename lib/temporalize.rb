@@ -1,35 +1,37 @@
-# lib/temporalize.rb
 # frozen_string_literal: true
 
 require_relative "temporalize/version"
+require_relative "temporalize/formats"
+require_relative "temporalize/configuration"
 require_relative "temporalize/seconds"
 
 module Temporalize
   class Error < StandardError; end
 
-  def self.temporalize(klass, attribute, column: nil, format: Temporalize::Formats::DEFAULT)
-    column ||= "#{attribute}_in_seconds".to_sym
-    format_string = format == Formats::DEFAULT ? configuration.default_format : format
+  def self.temporalize(klass, attribute, **options)
+    column = options[:column] || "#{attribute}_in_seconds".to_sym
+    format_string = options[:format] || configuration.default_format
 
     klass.class_eval do
       define_method(attribute) do
-        seconds = read_attribute(column)
+        seconds = public_send(column)
+        return nil if seconds.nil?
+
         seconds = seconds / 1000 if column.to_s.end_with?("_in_ms")
         Temporalize::Seconds.new(seconds, format_string)
       end
 
       define_method("#{attribute}=") do |value|
-        seconds = value.is_a?(Temporalize::Seconds) ? value.seconds : value
-        seconds = seconds * 1000 if column.to_s.end_with?("_in_ms")
-        write_attribute(column, seconds)
-      end
+        seconds = case value
+                  when Temporalize::Seconds then value.seconds
+                  when Numeric then value.to_i
+                  when nil then nil
+                  else
+                    raise ArgumentError, "Invalid duration value: #{value.inspect}"
+                  end
 
-      define_method(column) do
-        read_attribute(column)
-      end
-
-      define_method("#{column}=") do |value|
-        write_attribute(column, value)
+        seconds = seconds * 1000 if column.to_s.end_with?("_in_ms") && !seconds.nil?
+        public_send("#{column}=", seconds)
       end
     end
   end
@@ -39,14 +41,6 @@ module Temporalize
   end
 
   def self.configure
-    yield(configuration)
-  end
-
-  class Configuration
-    attr_accessor :default_format
-
-    def initialize
-      @default_format = Formats::DEFAULT
-    end
+    yield(configuration) if block_given?
   end
 end

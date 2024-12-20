@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a1db3e0a-e4bb-43ff-8d98-08252db0497e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/temporalize.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/temporalize.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temporalize.gemspec" beforeDir="false" afterPath="$PROJECT_DIR$/temporalize.gemspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/temporalize_test.rb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/temporalize/configuration.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/temporalize/configuration.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/temporalize/formats.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/temporalize/formats.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/temporalize/seconds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/temporalize/seconds.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_helper.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +60,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734710263052</updated>
-      <workItem from="1734710264681" duration="3527000" />
+      <workItem from="1734710264681" duration="4271000" />
     </task>
     <servers />
   </component>
